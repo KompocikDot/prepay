@@ -20,4 +20,5 @@ services:
       - .env.dev
     volumes:
       - ./:/usr/src/app
-
+    restart:
+      always
