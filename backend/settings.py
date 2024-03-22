@@ -42,6 +42,11 @@ THIRD_PARTY_APPS = [
     "allauth.socialaccount",
     "widget_tweaks",
     "phonenumber_field",
+    "tailwind",
+    "theme",  # Tailwind created app to manage theme
+    "django_browser_reload",
+    "crispy_forms",
+    "crispy_tailwind",
 ]
 
 
@@ -65,6 +70,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "allauth.account.middleware.AccountMiddleware",
+    "django_browser_reload.middleware.BrowserReloadMiddleware",
 ]
 
 ROOT_URLCONF = "backend.urls"
@@ -160,3 +166,13 @@ AUTH_USER_MODEL = "users.User"
 
 ACCOUNT_EMAIL_REQUIRED = True
 SOCIALACCOUNT_PROVIDERS = {}
+
+# Tailwindcss config
+
+TAILWIND_APP_NAME = "theme"
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
+CRISPY_TEMPLATE_PACK = "tailwind"
