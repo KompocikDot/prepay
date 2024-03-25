@@ -2,6 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
+from django.views.generic import CreateView
 from django.views.generic.edit import FormView
 
 from users.forms import AddAdditionalDataForm, UserProfileForm
@@ -33,19 +34,15 @@ class AddAdditionalAccountDataView(LoginRequiredMixin, FormView):
         return super().get(request, *args, **kwargs)
 
 
-class UserProfileView(LoginRequiredMixin, FormView):
+class UserProfileView(LoginRequiredMixin, CreateView):
     form_class = UserProfileForm
     template_name = "profile/profile.html"
     success_url = reverse_lazy("profile")
 
-    def get_object(self, queryset=None) -> User:
+    def get_object(self, *args, **kwargs) -> User:
         return User.objects.get(pk=self.request.user.id)  # type: ignore
 
     def get_form(self, *args, **kwargs):
         if self.request.method in ["POST", "PUT"]:
             return UserProfileForm(self.request.POST, instance=self.get_object())
         return UserProfileForm(instance=self.get_object())
-
-    def form_valid(self, form: UserProfileForm) -> HttpResponse:
-        form.save()
-        return super().form_valid(form)

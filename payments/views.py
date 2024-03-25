@@ -3,7 +3,7 @@ from django.db.models import QuerySet
 from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.views.generic import ListView
-from django.views.generic.edit import CreateView, FormView
+from django.views.generic.edit import CreateView
 
 from .forms import CreatePaymentForm
 from .models import Payment
@@ -26,5 +26,4 @@ class PaymentsCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form: CreatePaymentForm) -> HttpResponse:
         form.instance.issuer = self.request.user
-        print(form.instance)
         return super().form_valid(form)
