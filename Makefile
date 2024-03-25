@@ -18,3 +18,6 @@ createsu:
 
 makemessages:
 	docker compose exec -it django python manage.py makemessages -l pl
+
+sh:
+	docker compose exec -it django sh

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block sidebar %}
+{% include 'sidebar.html' with active_tab="create_payment" %}
+{% endblock %}
+
+{% block content %}
+
+<form method="POST">
+{% csrf_token %}
+{{ form.non_field_errors }}
+
+<div class="sm:col-span-3">
+  <div class="flex flex-row">
+    {{ form.amount.label_tag }}
+    {{form.amount}}
+  </div>
+  {% for error in amount.errors %}
+    <div class="mt-2">{{ error }}</div>
+  {% endfor %}
+  </div>
+
+  <input type="submit" value="Create payment" />
+</form>
+
+{% endblock %}

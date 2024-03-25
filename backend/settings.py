@@ -45,8 +45,7 @@ THIRD_PARTY_APPS = [
     "tailwind",
     "theme",  # Tailwind created app to manage theme
     "django_browser_reload",
-    "crispy_forms",
-    "crispy_tailwind",
+    "djmoney",
 ]
 
 
@@ -58,6 +57,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "users",
+    "payments",
 ] + THIRD_PARTY_APPS
 
 MIDDLEWARE = [
@@ -164,6 +164,8 @@ AUTH_USER_MODEL = "users.User"
 
 # Allauth settings
 
+LOGIN_REDIRECT_URL = "/account/"
+LOGIN_URL = "/auth/login"
 ACCOUNT_EMAIL_REQUIRED = True
 SOCIALACCOUNT_PROVIDERS = {}
 

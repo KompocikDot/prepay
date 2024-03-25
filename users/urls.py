@@ -1,6 +1,6 @@
 from django.urls import path
 
-from users.views import AddAdditionalAccountDataView
+from users.views import AddAdditionalAccountDataView, UserProfileView
 
 urlpatterns = [
     path(
@@ -8,4 +8,5 @@ urlpatterns = [
         AddAdditionalAccountDataView.as_view(),
         name="add_additional_account_data",
     ),
+    path("", UserProfileView.as_view(), name="profile"),
 ]

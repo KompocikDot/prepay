@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+
+{% block sidebar %}
+	{% include 'sidebar.html' with active_tab="profile" %}
+{% endblock %}
+
+{% block content %}
+<form method="post">
+	{% csrf_token %}
+	<div class="flex flex-col space-y-4">
+		<div class="space-y-12">
+			<div class="border-b border-gray-900/10 pb-12">
+				<h2 class="text-base font-semibold leading-7 text-gray-900">Your profile</h2>
+				<p class="mt-1 text-sm leading-6 text-gray-600">Your name and username will be visible to the others.</p>
+					
+				<div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+					{{ form.non_field_errors }}
+					{% for field in form %}
+					<div class="sm:col-span-3">
+						<label for="{{ field.id_for_label }}"
+							class="block text-sm font-medium leading-6 text-gray-900">{{field.label}}</label>
+						<div class="mt-2">
+							{{ field|add_class:'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-secondary sm:text-sm sm:leading-6'}}
+						</div>
+						{% for error in field.errors %}
+						<div class="mt-2">{{ error }}</div>
+						{% endfor %}
+					</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+		<div class="mt-6 flex items-center justify-end gap-x-6">
+			<button type="submit"
+				class="rounded-md bg-secondary px-6 py-4 text-sm font-semibold text-base-text shadow-sm hover:bg-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary">Update
+				profile</button>
+		</div>
+
+	</div>
+</form>
+{% endblock %}

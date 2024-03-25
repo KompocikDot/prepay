@@ -1,0 +1,44 @@
+{% load tailwind_tags %}
+{% load widget_tweaks %}
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-back">
+
+<head>
+	<title>Django Tailwind</title>
+	{% tailwind_css %}
+</head>
+
+<body class="h-full">
+	<div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+		<div class="sm:mx-auto sm:w-full sm:max-w-sm">
+			<h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-base-text">Add
+				additional data</h2>
+			<h4 class="text-center text-base-text">They will be required to use our service</h4>
+		</div>
+
+		<div class="mt-5 sm:mx-auto sm:w-full sm:max-w-sm">
+			<form class="space-y-4" method="POST">
+				{% csrf_token %}
+				{{ form.non_field_errors }}
+				{% for field in form %}
+					<div>
+							<label for="{{ field.id_for_label }}" class="block text-sm font-medium leading-6 text-base-text">{{ field.label}}</label>
+							<div class="mt-2">
+							        {{ field|add_class:'block w-full rounded-md border-0 py-1.5 text-base-text shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-base-text focus:ring-2 focus:ring-inset focus:ring-accent sm:text-sm sm:leading-6' }}
+							</div>
+							{% for error in field.errors %}
+								<div class="mt-2">{{ error }}</div>
+							{% endfor %}
+					</div>
+				{% endfor %}
+					
+				<div>
+					<button type="submit"
+						class="flex w-full justify-center rounded-md bg-secondary px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">Complete profile</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</body>
+
+</html>
