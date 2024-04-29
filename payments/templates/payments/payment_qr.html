@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block sidebar %}
+{% include 'sidebar.html' with active_tab="payments" %}
+{% endblock %}
+
+{% block content %}
+  {{qr_svg|safe}}
+{% endblock %}
