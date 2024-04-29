@@ -1,7 +1,9 @@
-from django.db import models
+
+from django.db import IntegrityError, models
 from djmoney.models.fields import MoneyField
 from djmoney.models.validators import MaxMoneyValidator, MinMoneyValidator
 
+from .utils import gen_external_id
 from users.models import User
 
 
@@ -25,8 +27,20 @@ class Payment(models.Model):
         ],
     )
 
+    external_id = models.CharField(default=gen_external_id)
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.issuer.username} | {self.pk} | {self.amount}"
+        return f"{self.issuer.username} | {self.external_id} | {self.amount}"
+
+    def save(self, *args, **kwargs) -> None:
+        while True:
+            try:
+                saved = super().save(*args, **kwargs)
+                return saved
+            except IntegrityError:
+                pass
+
+

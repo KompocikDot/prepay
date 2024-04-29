@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import QuerySet
 from django.http import HttpResponse
 from django.urls import reverse_lazy
-from django.views.generic import ListView
+from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import CreateView
 
 from .forms import CreatePaymentForm
@@ -27,3 +27,14 @@ class PaymentsCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form: CreatePaymentForm) -> HttpResponse:
         form.instance.issuer = self.request.user
         return super().form_valid(form)
+
+class PaymentsQRView(LoginRequiredMixin, DetailView):
+    template_name = "payments/qr.html"
+    queryset = Payment.objects.all()
+    pk_url_kwarg = "external_id"
+
+
+class ConfirmPaymentView(DetailView):
+    template_name = "payments/confirm.html"
+
+
