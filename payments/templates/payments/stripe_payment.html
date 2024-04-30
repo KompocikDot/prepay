@@ -1,4 +1,22 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block sidebar %}
+{% include 'sidebar.html' with active_tab="" %}
+{% endblock %}
+
+{% block content %}
+  <script src="https://js.stripe.com/v3/"></script>
+  <script src="{% static 'payments/checkout.js' %}"></script>
+<form id="payment-form">
+  <div id="payment-element">
+    <!-- Elements will create form elements here -->
+  </div>
+  <button id="submit">Submit</button>
+  <div id="error-message">
+    <!-- Display error message to your customers here -->
+  </div>
+</form>
+{% endblock %}
 
 
-{%%}

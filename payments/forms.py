@@ -20,4 +20,4 @@ class CreatePaymentForm(ModelForm):
 
     class Meta:
         model = Payment
-        fields = ["amount"]
+        fields = ["amount", "name"]

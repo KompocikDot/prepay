@@ -8,6 +8,16 @@ from users.models import User
 
 
 class Payment(models.Model):
+    class PaymentStatus(models.TextChoices):
+        CREATED = "CREATED"
+        WAITING_FOR_STRIPE_CONFIRMATION = "WAITING_FOR_STRIPE_CONFIRMATION"
+        CONFIRMED = "CONFIRMED"
+
+    status = models.CharField(
+        choices=PaymentStatus.choices, default=PaymentStatus.CREATED
+    )
+
+    name = models.CharField(max_length=255)
     issuer = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name="issuer")
     end_user = models.ForeignKey(
         User,

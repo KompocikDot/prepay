@@ -29,11 +29,14 @@ psycopg-binary==3.1.18
 py-moneyed==3.0
 pycparser==2.21
 PyJWT==2.8.0
+pypng==0.20220715.0
 python-dotenv==1.0.1
 python3-openid==3.2.0
+qrcode==7.4.2
 requests==2.31.0
 requests-oauthlib==1.4.0
 sqlparse==0.4.4
+stripe==8.8.0
 types-pytz==2024.1.0.20240203
 types-PyYAML==6.0.12.20240311
 typing_extensions==4.10.0
