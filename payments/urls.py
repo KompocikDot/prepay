@@ -6,6 +6,7 @@ from .views import (
     PaymentsListView,
     PaymentsQRView,
     PaymentStripeView,
+    PaymentSubmitView,
 )
 
 urlpatterns = [
@@ -17,5 +18,10 @@ urlpatterns = [
         "payments/<int:pk>/complete/",
         PaymentStripeView.as_view(),
         name="complete_payment",
+    ),
+    path(
+        "payments/<int:pk>/success/",
+        PaymentSubmitView.as_view(),
+        name="payment_success",
     ),
 ]

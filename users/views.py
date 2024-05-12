@@ -1,3 +1,6 @@
+from datetime import date
+from logging import log
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
 from django.shortcuts import redirect
@@ -5,6 +8,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from django.views.generic.edit import FormView
 
+from payments.stripe import StripeAccount
 from users.forms import AddAdditionalDataForm, UserProfileForm
 from users.models import User
 
@@ -25,7 +29,20 @@ class AddAdditionalAccountDataView(LoginRequiredMixin, FormView):
     def form_valid(self, form: AddAdditionalDataForm) -> HttpResponse:
         filled = self.get_object().additional_data_filled_in
         if not filled:
+            instance: User = form.instance
+            account = StripeAccount(
+                first_name=instance.first_name,
+                last_name=instance.last_name,
+                email=instance.email,
+                birth_date=date(2003, 1, 16),
+                phone_number=instance.phone_number,
+                address="Wrocław",
+            )
+
+            account_id = account.create()
+            instance.stripe_account_id = account_id
             form.save()
+
         return super(AddAdditionalAccountDataView, self).form_valid(form)
 
     def get(self, request, *args, **kwargs):

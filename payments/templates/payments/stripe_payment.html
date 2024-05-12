@@ -6,8 +6,10 @@
 {% endblock %}
 
 {% block content %}
-  <script src="https://js.stripe.com/v3/"></script>
-  <script src="{% static 'payments/checkout.js' %}"></script>
+<script type="text/javascript">
+  var clientSecret = "{{ payment_client_secret }}";
+</script>
+
 <form id="payment-form">
   <div id="payment-element">
     <!-- Elements will create form elements here -->
@@ -17,6 +19,8 @@
     <!-- Display error message to your customers here -->
   </div>
 </form>
+<script src="https://js.stripe.com/v3/"></script>
+<script src="{% static 'payments/checkout.js' %}"></script>
 {% endblock %}
 
 

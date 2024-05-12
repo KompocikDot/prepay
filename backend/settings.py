@@ -168,6 +168,7 @@ LOGIN_REDIRECT_URL = "/account/"
 LOGIN_URL = "/auth/login"
 ACCOUNT_EMAIL_REQUIRED = True
 SOCIALACCOUNT_PROVIDERS = {}
+ACCOUNT_EMAIL_VERIFICATION = "None"  # TODO: Change it to mandatory later on!
 
 # Tailwindcss config
 

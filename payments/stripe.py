@@ -1,6 +1,6 @@
 import logging
 import os
-from datetime import datetime
+from datetime import date, datetime, timezone
 from logging import log
 
 import stripe
@@ -24,7 +24,7 @@ class StripeAccount:
         email: str,
         phone_number: str,
         address: str,
-        birth_date: datetime,
+        birth_date: date,
     ) -> None:
         self.first_name = first_name
         self.last_name = last_name
@@ -33,23 +33,45 @@ class StripeAccount:
         self.address = address
         self.birth_date = birth_date
 
-    def create(self) -> None:
+    def create(self) -> str | None:
         try:
-            account = stripe.Account.create(type="express")
-            self.id = account.id
+            account = stripe.Account.create(
+                type="custom",
+                capabilities={
+                    "card_payments": {"requested": True},
+                    "transfers": {"requested": True},
+                },
+                business_type="individual",
+                individual={
+                    "first_name": self.first_name,
+                    "last_name": self.last_name,
+                    "dob": {
+                        "year": self.birth_date.year,
+                        "month": self.birth_date.month,
+                        "day": self.birth_date.day,
+                    },
+                    "address": {
+                        "line1": self.address,
+                        "postal_code": "15-349",  # FIXME: Change it later on
+                        "city": "Białystok",
+                    },
+                    "email": self.email,
+                    "phone": self.phone_number,
+                },
+                tos_acceptance={
+                    "ip": "127.0.0.1",  # FIXME: Change it later on to pass it from request
+                    "date": int(datetime.strftime(datetime.now(timezone.utc), "%s")),
+                },
+                business_profile={
+                    "mcc": "4829",
+                    "url": "https://soczko.com/",
+                },
+            )
+
+            return account.id
+
         except Exception as e:
             log(logging.ERROR, e)
-
-    def link(self, refresh_url: str, return_url: str) -> None:
-        if not self.id:
-            raise NoStripeAccountIDException
-
-        stripe.AccountLink.create(
-            account=self.id,
-            refresh_url=refresh_url,
-            return_url=return_url,
-            type="account_onboarding",
-        )
 
 
 class StripePayment:
@@ -60,7 +82,7 @@ class StripePayment:
         self.app_fee = app_fee
 
     def create_session(
-        self, success_url: str, cancel_url: str, account_id: str
+        self, success_url: str, cancel_url: str, issuer_uuid: str
     ) -> None:
         stripe.checkout.Session.create(
             mode="payment",
@@ -78,7 +100,7 @@ class StripePayment:
             ],
             payment_intent_data={
                 "application_fee_amount": self.app_fee,
-                "transfer_data": {"destination": account_id},
+                "transfer_data": {"destination": issuer_uuid},
             },
             success_url=success_url,
             cancel_url=cancel_url,
@@ -88,7 +110,10 @@ class StripePayment:
         intent = stripe.PaymentIntent.create(
             amount=self.amount,
             currency=self.currency,
-            automatic_payment_methods={"enabled": True},
+            payment_method_types=[
+                "card",
+                "p24",
+            ],
             application_fee_amount=self.app_fee,
             transfer_data={"destination": issuer_uuid},
         )
