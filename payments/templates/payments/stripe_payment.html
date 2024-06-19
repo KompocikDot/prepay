@@ -7,7 +7,8 @@
 
 {% block content %}
 <script type="text/javascript">
-  var clientSecret = "{{ payment_client_secret }}";
+  const clientSecret = "{{ payment_client_secret|safe }}";
+  const stripeReturnURL = "{% url 'post_payment' pk=payment.id %}";
 </script>
 
 <form id="payment-form">

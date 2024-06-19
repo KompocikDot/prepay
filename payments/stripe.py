@@ -2,6 +2,7 @@ import logging
 import os
 from datetime import date, datetime, timezone
 from logging import log
+from typing import Self
 
 import stripe
 
@@ -75,38 +76,16 @@ class StripeAccount:
 
 
 class StripePayment:
-    def __init__(self, name: str, amount: int, currency: str, app_fee: int) -> None:
+    def __init__(
+        self, name: str, amount: int, currency: str, app_fee: int, payer_id: int
+    ) -> None:
         self.name = name
         self.amount = amount
         self.currency = currency
         self.app_fee = app_fee
+        self.payer_id = payer_id
 
-    def create_session(
-        self, success_url: str, cancel_url: str, issuer_uuid: str
-    ) -> None:
-        stripe.checkout.Session.create(
-            mode="payment",
-            line_items=[
-                {
-                    "quantity": 1,
-                    "price_data": {
-                        "currency": self.currency,
-                        "product_data": {
-                            "name": self.name,
-                        },
-                        "unit_amount": self.amount,
-                    },
-                },
-            ],
-            payment_intent_data={
-                "application_fee_amount": self.app_fee,
-                "transfer_data": {"destination": issuer_uuid},
-            },
-            success_url=success_url,
-            cancel_url=cancel_url,
-        )
-
-    def create_intent(self, issuer_uuid: str) -> str:
+    def create_intent(self, issuer_uuid: str) -> stripe.PaymentIntent:
         intent = stripe.PaymentIntent.create(
             amount=self.amount,
             currency=self.currency,
@@ -116,10 +95,16 @@ class StripePayment:
             ],
             application_fee_amount=self.app_fee,
             transfer_data={"destination": issuer_uuid},
+            metadata={"user_id": str(self.payer_id)},
         )
 
         secret = intent.client_secret
         if not secret:
             raise NoStripeClientSecretException
 
-        return secret
+        return intent
+
+    @staticmethod
+    def is_intent_successfully_completed(client_secret: str) -> bool:
+        intent = stripe.PaymentIntent.retrieve(client_secret)
+        return intent.status == "succeeded"

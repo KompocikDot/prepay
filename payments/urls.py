@@ -1,12 +1,12 @@
 from django.urls import path
 
 from .views import (
+    PaymentPostView,
     PaymentsCreateView,
     PaymentsDetailView,
     PaymentsListView,
     PaymentsQRView,
     PaymentStripeView,
-    PaymentSubmitView,
 )
 
 urlpatterns = [
@@ -20,8 +20,8 @@ urlpatterns = [
         name="complete_payment",
     ),
     path(
-        "payments/<int:pk>/success/",
-        PaymentSubmitView.as_view(),
-        name="payment_success",
+        "payments/<int:pk>/after/",
+        PaymentPostView.as_view(),
+        name="post_payment",
     ),
 ]

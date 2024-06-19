@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os
 from pathlib import Path
 
+from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from dotenv import load_dotenv
 
@@ -58,6 +59,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "users",
     "payments",
+    "dashboard",
 ] + THIRD_PARTY_APPS
 
 MIDDLEWARE = [
@@ -164,7 +166,7 @@ AUTH_USER_MODEL = "users.User"
 
 # Allauth settings
 
-LOGIN_REDIRECT_URL = "/account/"
+LOGIN_REDIRECT_URL = reverse_lazy("additional_account_data")
 LOGIN_URL = "/auth/login"
 ACCOUNT_EMAIL_REQUIRED = True
 SOCIALACCOUNT_PROVIDERS = {}

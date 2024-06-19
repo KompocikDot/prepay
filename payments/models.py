@@ -1,10 +1,10 @@
-
 from django.db import IntegrityError, models
 from djmoney.models.fields import MoneyField
 from djmoney.models.validators import MaxMoneyValidator, MinMoneyValidator
 
-from .utils import gen_external_id
 from users.models import User
+
+from .utils import gen_external_id
 
 
 class Payment(models.Model):
@@ -30,20 +30,21 @@ class Payment(models.Model):
     amount = MoneyField(
         max_digits=7,
         decimal_places=2,
-        currency_choices=[("USD", "USD $"), ("EUR", "EUR €"), ("PLN", "PLN zł")],
+        currency_choices=[("EUR", "EUR €"), ("PLN", "PLN zł")],
         validators=[
-            MinMoneyValidator({"EUR": 1, "PLN": 5, "USD": 1}),
-            MaxMoneyValidator({"EUR": 20000, "PLN": 99999, "USD": 20000}),
+            MinMoneyValidator({"EUR": 1, "PLN": 5}),
+            MaxMoneyValidator({"EUR": 20000, "PLN": 99999}),
         ],
     )
 
     external_id = models.CharField(default=gen_external_id)
+    stripe_payment_id = models.CharField(null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.issuer.username} | {self.external_id} | {self.amount}"
+        return f"{self.issuer.username} | {self.external_id} | {self.amount} | {self.status}"
 
     def save(self, *args, **kwargs) -> None:
         while True:
@@ -52,5 +53,3 @@ class Payment(models.Model):
                 return saved
             except IntegrityError:
                 pass
-
-

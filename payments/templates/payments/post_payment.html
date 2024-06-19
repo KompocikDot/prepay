@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block sidebar %}
+{% include 'sidebar.html' with active_tab="" %}
+{% endblock %}
+
+{% block content %}
+{% include './status.html' %}
+{% endblock %}

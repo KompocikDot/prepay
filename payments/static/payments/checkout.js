@@ -1,5 +1,5 @@
-const stripe = Stripe('pk_test_51AROWSJX9HHJ5bycpEUP9dK39tXufyuWogSUdeweyZEXy3LC7M8yc5d9NlQ96fRCVL0BlAu7Nqt4V7N5xZjJnrkp005fDiTMIr');
-console.log(clientSecret);
+const stripe = Stripe('pk_test_GnLsjJECmTF229SRIvSyJ7Nk00aPoA2ccF');
+
 const options = {
 	clientSecret: clientSecret,
 	appearance: {},
@@ -22,7 +22,7 @@ form.addEventListener('submit', async (event) => {
 		//`Elements` instance that was used to create the Payment Element
 		elements,
 		confirmParams: {
-			return_url: "http://localhost:8000/payment/123/success",
+			return_url: "http://localhost:8000" + stripeReturnURL,
 		},
 	});
 

@@ -19,7 +19,7 @@
           <li>
             <ul role="list" class="-mx-2 space-y-1">
               <li>
-                <a href="#"
+                <a href="{% url 'dashboard' %}"
                   class="{% if active_tab == 'dashboard' %} bg-secondary {% endif %} hover:bg-secondary text-base-text group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
                   <svg class="h-6 w-6 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                     aria-hidden="true">
@@ -80,7 +80,7 @@
         <li>
           <ul role="list" class="-mx-2 space-y-1">
             <li>
-              <a href="#"
+              <a href="{% url 'dashboard' %}"
                 class="{% if active_tab == 'dashboard' %} bg-secondary {% endif %} hover:bg-secondary text-base-text group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
                 <svg class="h-6 w-6 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                   aria-hidden="true">

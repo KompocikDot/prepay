@@ -1,0 +1,9 @@
+{% block content %}
+{% if payment.status == payment.PaymentStatus.CONFIRMED %}
+<p>Payment confirmed, thanks!</p>
+{% elif payment.status == payment.PaymentStatus.WAITING_FOR_STRIPE_CONFIRMATION %}
+<p>Payment is being confirmed, please wait...</p>
+{% else %}
+<p>Payment is not completed, please go to /complete</p>
+{% endif %}
+{% endblock %}

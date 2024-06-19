@@ -6,7 +6,7 @@ urlpatterns = [
     path(
         "additional-data/",
         AddAdditionalAccountDataView.as_view(),
-        name="add_additional_account_data",
+        name="additional_account_data",
     ),
     path("", UserProfileView.as_view(), name="profile"),
 ]

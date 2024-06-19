@@ -5,5 +5,39 @@
 {% endblock %}
 
 {% block content %}
-{{ payment }}
+
+<div class="bg-base rounded-md">
+  <div class="mx-auto max-w-7xl">
+    <div class="grid grid-cols-1 gap-px bg-white/5 lg:grid-cols-3">
+      <div class="px-4 py-6 sm:px-6 lg:px-8">
+        <p class="text-sm font-medium leading-6 text-base-text">Payment from</p>
+        <p class="mt-2 flex items-baseline gap-x-2">
+          <span class="text-4xl font-semibold tracking-tight text-secondary">
+            {{payment.end_user|default_if_none:"-"}}</span>
+        </p>
+      </div>
+      <div class="px-4 py-6 sm:px-6 lg:px-8">
+        <p class="text-sm font-medium leading-6 text-base-text">Amount</p>
+        <p class="mt-2 flex items-baseline gap-x-2">
+          <span class="text-4xl font-semibold tracking-tight text-secondary">{{payment.amount.amount}}</span>
+          <span class="text-sm text-base-text">{{payment.amount.currency}}</span>
+        </p>
+      </div>
+      <div class="px-4 py-6 sm:px-6 lg:px-8">
+        <p class="text-sm font-medium leading-6 text-base-text">Status</p>
+        <p class="mt-2 flex items-baseline gap-x-2">
+          <span class="text-4xl font-semibold tracking-tight text-secondary">{{payment.status|title}}</span>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="flex items-center justify-center flex-col">
+  {% if payment.status == payment.PaymentStatus.CREATED %}
+  <p class="mt-5 text-md lg:text-lg">Share this code to complete payment</p>
+  <div class="w-96 h-96">
+  {{qr_svg|safe}}
+  </div>
+  {% endif %}
+</div>
 {% endblock %}

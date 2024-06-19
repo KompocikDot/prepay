@@ -5,7 +5,7 @@ from users.models import User
 
 
 class TestUsers(TestCase):
-    ACCOUNT_URL = reverse("add_additional_account_data")
+    ACCOUNT_URL = reverse("additional_account_data")
 
     @classmethod
     def setUpTestData(cls) -> None:
