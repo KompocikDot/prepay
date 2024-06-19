@@ -11,30 +11,45 @@
 {% csrf_token %}
 {{ form.non_field_errors }}
 
-<div class="flex flex-col space-y-4 sm:col-span-3">
-    <div class="flex flex-row">
-      {{ form.amount.label_tag }}
-      {{form.amount}}
-    </div>
-    {% for error in amount.errors %}
-      <div class="mt-2">{{ error }}</div>
-    {% endfor %}
+  
+<div class="flex flex-col space-y-4">
+		<div class="space-y-12">
+			<div class="border-b border-gray-900/10 pb-12">
+				<h2 class="text-base font-semibold leading-7 text-gray-900">Payment details</h2>
+				<p class="mt-1 text-sm leading-6 text-gray-600">Fill the data to create payment.</p>
+					
+				<div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+					{{ form.non_field_errors }}
+          
+          <div class="sm:col-span-3">
+	    <label for="{{ form.name.id_for_label }}" class="block text-sm font-medium leading-6 text-gray-900">{{form.name.label}}</label>
+            <div class="mt-2">
+                {{form.name}}
+            </div>	
+            {% for error in form.name.errors %}
+		<div class="mt-2">{{ error }}</div>
+	    {% endfor %}
+          </div>
+          <div class="sm:col-span-3">
+	    <label for="{{ form.amount.id_for_label }}" class="block text-sm font-medium leading-6 text-gray-900">{{form.amount.label}}</label>
+            <div class="mt-2 flex flex-row">
+              {{form.amount}}
+            </div>	
+            {% for error in form.amount.errors %}
+		<div class="mt-2">{{ error }}</div>
+	    {% endfor %}
+          </div>
 
-    <div class="flex flex-row">
-      {{ form.name.label_tag }}
-      {{form.name}}
-    </div>
-    
-    {% for error in name.errors %}
-      <div class="mt-2">
-        {{ error }}
-      </div>
-    {% endfor %}
-    </div>
-
-  <div class="mt-6 flex items-center justify-end gap-x-6">
+					</div>
+			</div>
+		</div>
+    <div class="mt-6 flex items-center justify-end gap-x-6">
     <input class="rounded-md bg-secondary px-6 py-4 text-sm font-semibold text-base-text shadow-sm hover:bg-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary" type="submit" value="Create payment" />
   </div>
+
+
+	</div>
+
 </form>
 
 {% endblock %}
